@@ -87,7 +87,7 @@ function extractFromHtml(html: string, url: string, retailerName: string, curren
 
 const PUBLIC_PROMO_HINTS: Record<string, { title: string; discount: string; type: string; requirements: string }[]> = {
   takealot: [{ title: "Takealot free shipping threshold", discount: "Free shipping over typical order minimum", type: "free_shipping", requirements: "Threshold may change" }],
-  shein: [{ title: "SHEIN first-order / app discounts", discount: "Often 10–30% for new users via app", type: "percentage", requirements: "Usually new customers" }],
+  shein: [{ title: "SHEIN first-order / app discounts", discount: "Often 10-30% for new users via app", type: "percentage", requirements: "Usually new customers" }],
   temu: [{ title: "Temu new-user promotions", discount: "Frequently offers first-order deals", type: "percentage", requirements: "New accounts" }],
   aliexpress: [{ title: "AliExpress coins & store coupons", discount: "Store coupons + coins often available", type: "other", requirements: "Login required" }],
 };
@@ -128,16 +128,16 @@ export async function analyzeUrl(rawUrl: string): Promise<AnalysisResult> {
   const opportunities: SavingsOpportunity[] = [];
   opportunities.push({ type: "cheaper_listing", title: "Compare prices across stores", description: "Use the search links below to check Google Shopping, Takealot, SHEIN and others. Shipping and import costs can change the final total.", estimatedSaving: null, currency: retailer.currency, status: "unverified", actionUrl: null, actionLabel: "See search links" });
   for (const h of PUBLIC_PROMO_HINTS[retailer.id] || []) {
-    opportunities.push({ type: h.type === "free_shipping" ? "free_shipping" : "promo", title: h.title, description: `${h.discount}. ${h.requirements}. This has not been automatically verified – check at checkout.`, estimatedSaving: null, currency: retailer.currency, status: "unverified", actionUrl: url, actionLabel: "Check on retailer" });
+    opportunities.push({ type: h.type === "free_shipping" ? "free_shipping" : "promo", title: h.title, description: `${h.discount}. ${h.requirements}. This has not been automatically verified - check at checkout.`, estimatedSaving: null, currency: retailer.currency, status: "unverified", actionUrl: url, actionLabel: "Check on retailer" });
   }
   if (["takealot", "shein", "temu"].includes(retailer.id)) {
     opportunities.push({ type: "free_shipping", title: "Check free-shipping threshold", description: "Many South African-facing stores offer free shipping above a minimum order value.", estimatedSaving: null, currency: "ZAR", status: "unverified", actionUrl: url, actionLabel: "View product" });
   }
   let message = product?.title
-    ? `We found product information for “${product.title.slice(0, 80)}${product.title.length > 80 ? "…" : "”}.`
+    ? `We found product information for "${product.title.slice(0, 80)}${product.title.length > 80 ? "..." : ""}".`
     : "We identified the retailer but could not fully extract product details.";
   message += " No guaranteed savings are shown because live coupon verification requires additional data sources. Use the comparison links and always confirm the final price at checkout.";
-  if (!limitations.length) limitations.push("Prices and promotions change frequently. Always verify at the retailer’s checkout.");
+  if (!limitations.length) limitations.push("Prices and promotions change frequently. Always verify at the retailer's checkout.");
   return {
     success: true,
     product,
